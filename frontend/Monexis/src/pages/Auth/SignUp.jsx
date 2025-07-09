@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { auth, googleProvider } from "./firebase";
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import ProfileSetup from "../Dashboard/ProfileSetup";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -11,8 +10,12 @@ export default function SignUp() {
   const handleGoogleSignup = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
-      toast.success("Signed up with Google!");
-      navigate("/ProfileSetup");
+      const user = auth.currentUser;
+      if (user) {
+        localStorage.setItem("userEmail", user.email);
+        toast.success("Signed up with Google!");
+        navigate("/ProfileSetup");
+      }
     } catch (error) {
       toast.error(error.message);
     }
@@ -25,8 +28,12 @@ export default function SignUp() {
 
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      toast.success("Signed up successfully!");
-      navigate("/ProfileSetup");
+      const user = auth.currentUser;
+      if (user) {
+        localStorage.setItem("userEmail", user.email);
+        toast.success("Signed up successfully!");
+        navigate("/ProfileSetup");
+      }
     } catch (error) {
       toast.error(error.message);
     }
@@ -34,7 +41,7 @@ export default function SignUp() {
 
   return (
     <div className="min-h-screen bg-gray-800 flex flex-col items-center px-4">
-     <div className="w-full flex justify-start mt-4">
+      <div className="w-full flex justify-start mt-4">
         <button
           onClick={() => navigate("/")}
           className="ml-4 px-4 py-1 border text-white border-gray-300 rounded hover:bg-gray-700 transition"

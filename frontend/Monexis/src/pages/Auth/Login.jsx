@@ -4,15 +4,18 @@ import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
-
 export default function Login() {
   const navigate = useNavigate();
 
   const handleGoogleLogin = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
-      toast.success("Logged in with Google!");
-      navigate("/dashboard");
+      const user = auth.currentUser;
+      if (user) {
+        localStorage.setItem("userEmail", user.email);
+        toast.success("Logged in with Google!");
+        navigate("/dashboard");
+      }
     } catch (error) {
       toast.error(error.message);
     }
@@ -25,8 +28,12 @@ export default function Login() {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      toast.success("Logged in successfully!");
-      navigate("/dashboard");
+      const user = auth.currentUser;
+      if (user) {
+        localStorage.setItem("userEmail", user.email);
+        toast.success("Logged in successfully!");
+        navigate("/dashboard");
+      }
     } catch (error) {
       toast.error(error.message);
     }

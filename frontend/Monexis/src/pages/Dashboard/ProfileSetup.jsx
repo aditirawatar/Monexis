@@ -1,19 +1,46 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { auth } from "../Auth/firebase";
 
 export default function ProfileSetup() {
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here, save data to DB (we'll connect this later)
-    navigate("/dashboard");
+
+    const email = auth.currentUser?.email;
+
+    if (!email) {
+      toast.error("User email not found. Please login again.");
+      return;
+    }
+
+    const data = {
+      email: email,
+      income: e.target.income.value,
+      expenses: e.target.expenses.value,
+      investments: e.target.investments.value,
+      savingsGoal: e.target.savingsGoal.value,
+    };
+
+    try {
+      await axios.post("http://localhost:5000/api/profile", data);
+      toast.success("Profile saved successfully!");
+      navigate("/dashboard");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to save profile");
+    }
   };
 
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-center px-4">
       <div className="bg-white p-8 rounded-lg shadow max-w-lg w-full">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Setup Your Financial Profile 💰</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+          Setup Your Financial Profile 💰
+        </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>

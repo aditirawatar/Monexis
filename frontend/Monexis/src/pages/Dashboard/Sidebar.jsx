@@ -1,9 +1,20 @@
 import React from "react";
-import { FaMoneyCheckAlt, FaFileAlt, FaChartPie, FaChartLine } from "react-icons/fa";
-import { FaHome, FaPiggyBank, FaChartBar } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
-export default function SideContent({ isOpen, toggleSidebar }) {
+import {
+  FaMoneyCheckAlt,
+  FaChartPie,
+  FaChartLine,
+  FaHome,
+  FaPiggyBank,
+  FaChartBar,
+  FaBook
+} from "react-icons/fa";
+import { useNavigate, useLocation } from "react-router-dom";
+
+export default function Sidebar({ isOpen, toggleSidebar }) {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const isActive = (path) => location.pathname === path;
 
   return (
     <aside
@@ -11,7 +22,7 @@ export default function SideContent({ isOpen, toggleSidebar }) {
         isOpen ? "translate-x-0" : "-translate-x-full"
       } md:relative md:translate-x-0 transition duration-200 ease-in-out`}
     >
-         <button
+      <button
         onClick={() => navigate("/")}
         className="w-full text-left text-3xl px-4 rounded hover:bg-gray-700 transition"
       >
@@ -20,28 +31,43 @@ export default function SideContent({ isOpen, toggleSidebar }) {
       <button onClick={toggleSidebar} className="md:hidden text-right w-full text-gray-300 mb-4">
         ✖
       </button>
-      <nav className="space-y-4">
-       <a href="#" className="flex items-center px-4 py-2 hover:bg-gray-700 rounded">
+      <nav className="space-y-2">
+        <button
+          onClick={() => navigate("/dashboard")}
+          className={`flex items-center w-full px-4 py-2 rounded transition ${
+            isActive("/dashboard") ? "bg-gray-700" : "hover:bg-gray-700"
+          }`}
+        >
           <FaHome className="mr-3" /> Dashboard
-        </a>
-        <a href="#" className="flex items-center px-4 py-2 hover:bg-gray-700 rounded">
-          <FaPiggyBank className="mr-3" /> Investment Tracker
-        </a>
-        <a href="#" className="flex items-center px-4 py-2 hover:bg-gray-700 rounded">
-          <FaChartBar className="mr-3" /> Financial Analytics
-        </a>
-        <a href="#" className="flex items-center px-4 py-2 hover:bg-gray-700 rounded">
+        </button>
+
+        <button
+          onClick={() => navigate("/transaction")}
+          className={`flex items-center w-full px-4 py-2 rounded transition ${
+            isActive("/transaction") ? "bg-gray-700" : "hover:bg-gray-700"
+          }`}
+        >
           <FaMoneyCheckAlt className="mr-3" /> Transactions
-        </a>
-        <a href="#" className="flex items-center px-4 py-2 hover:bg-gray-700 rounded">
-          <FaFileAlt className="mr-3" /> Documentation
-        </a>
-        <a href="#" className="flex items-center px-4 py-2 hover:bg-gray-700 rounded">
-          <FaChartPie className="mr-3" /> Budgeting
-        </a>
-        <a href="#" className="flex items-center px-4 py-2 hover:bg-gray-700 rounded">
-          <FaChartLine className="mr-3" /> Stock Market
-        </a>
+        </button>
+
+        <button
+          onClick={() => navigate("/investment")}
+          className={`flex items-center w-full px-4 py-2 rounded transition ${
+            isActive("/investment") ? "bg-gray-700" : "hover:bg-gray-700"
+          }`}
+        >
+          <FaPiggyBank className="mr-3" /> Investment Tracker
+        </button>
+
+        <button
+          onClick={() => navigate("/FinancialAnalytics")}
+          className={`flex items-center w-full px-4 py-2 rounded transition ${
+            isActive("/FinancialAnalytics") ? "bg-gray-700" : "hover:bg-gray-700"
+          }`}
+        >
+          <FaChartBar className="mr-3" /> Analytics
+        </button>
+
       </nav>
     </aside>
   );

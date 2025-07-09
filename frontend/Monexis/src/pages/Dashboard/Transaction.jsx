@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "../../components/Layout";
-import transactionsData from "../../components/transactionData";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
 export default function Transaction() {
-  const [transactions, setTransactions] = useState(transactionsData);
+  const [transactions, setTransactions] = useState(() => {
+    const stored = localStorage.getItem("transactions");
+    return stored ? JSON.parse(stored) : [];
+  });
+
   const [filterType, setFilterType] = useState("All");
   const [showForm, setShowForm] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -18,6 +21,10 @@ export default function Transaction() {
     date: "",
   });
 
+  useEffect(() => {
+    localStorage.setItem("transactions", JSON.stringify(transactions));
+  }, [transactions]);
+
   const totalAmount = transactions.reduce((sum, tx) => sum + tx.amount, 0);
 
   const filteredTransactions = transactions.filter((tx) => {
@@ -28,13 +35,11 @@ export default function Transaction() {
   const handleAddOrUpdate = (e) => {
     e.preventDefault();
     if (isEditing) {
-      // Update
       setTransactions((prev) =>
         prev.map((tx) => (tx.id === formData.id ? { ...formData, amount: Number(formData.amount) } : tx))
       );
       setIsEditing(false);
     } else {
-      // Add new
       const newTx = {
         ...formData,
         id: Date.now(),
@@ -42,7 +47,6 @@ export default function Transaction() {
       };
       setTransactions([newTx, ...transactions]);
     }
-
     setFormData({ id: null, title: "", amount: "", type: "Expense", date: "" });
     setShowForm(false);
   };
@@ -59,6 +63,8 @@ export default function Transaction() {
 
   return (
     <Layout>
+      <h1 className="text-xl mb-4 font-bold text-gray-800">Transactions</h1>
+
       <div className="bg-white p-4 rounded shadow mb-6">
         <p className="text-gray-700">Total Transactions: {transactions.length}</p>
         <p className="text-gray-700">Total Amount: ₹ {totalAmount.toLocaleString()}</p>
@@ -157,17 +163,11 @@ export default function Transaction() {
               >
                 ₹ {tx.amount.toLocaleString()}
               </p>
-              <button
-                onClick={() => handleEdit(tx)}
-                className="text-yellow-500 hover:underline"
-              >
-                 <FaEdit />
+              <button onClick={() => handleEdit(tx)} className="text-yellow-500">
+                <FaEdit />
               </button>
-              <button
-                onClick={() => handleDelete(tx.id)}
-                className="text-red-500 hover:underline"
-              >
-                 <FaTrash />
+              <button onClick={() => handleDelete(tx.id)} className="text-red-500">
+                <FaTrash />
               </button>
             </div>
           </div>

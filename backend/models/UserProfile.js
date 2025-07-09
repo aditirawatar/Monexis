@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const UserProfileSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
@@ -8,4 +8,6 @@ const UserProfileSchema = new mongoose.Schema({
   savingsGoal: Number,
 });
 
-module.exports = mongoose.model("UserProfile", UserProfileSchema);
+const UserProfile = mongoose.model("UserProfile", UserProfileSchema);
+
+export default UserProfile;

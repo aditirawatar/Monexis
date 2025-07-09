@@ -1,6 +1,7 @@
-const express = require("express");
+import express from "express";
+import UserProfile from "../models/UserProfile.js";
+
 const router = express.Router();
-const UserProfile = require("../models/UserProfile");
 
 // Save or update profile
 router.post("/", async (req, res) => {
@@ -41,4 +42,4 @@ router.get("/:email", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
