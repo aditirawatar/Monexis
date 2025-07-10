@@ -21,7 +21,7 @@ export default function FinancialAnalytics() {
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
-  // Example monthly data (replace with actual data later)
+  // Example monthly data 
   const monthlyData = [
     { month: "Jan", income: 30000, expenses: 20000 },
     { month: "Feb", income: 35000, expenses: 25000 },
