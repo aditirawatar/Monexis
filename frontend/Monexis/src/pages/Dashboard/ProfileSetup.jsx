@@ -4,6 +4,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { auth } from "../Auth/firebase";
 
+
 export default function ProfileSetup() {
   const navigate = useNavigate();
 
