@@ -26,7 +26,7 @@ export default function ProfileSetup() {
     };
 
     try {
-      await axios.post("http://localhost:5000/api/profile", data);
+     await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/profile`, data);
       toast.success("Profile saved successfully!");
       navigate("/dashboard");
     } catch (error) {
