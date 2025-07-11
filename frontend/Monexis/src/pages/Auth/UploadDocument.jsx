@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../../api";
 
 export default function UploadDocument() {
   const [file, setFile] = useState(null);
@@ -11,7 +11,7 @@ export default function UploadDocument() {
 
   const fetchDocuments = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/documents");
+      const res = await api.get(`/api/documents`);
       setDocuments(res.data);
     } catch (err) {
       console.error(err);
@@ -30,7 +30,7 @@ export default function UploadDocument() {
     formData.append("document", file);
 
     try {
-      await axios.post("http://localhost:5000/api/documents/upload", formData);
+      await api.post(`/api/documents/upload`, formData);
       alert("Document uploaded successfully");
       setFile(null);
       fetchDocuments();

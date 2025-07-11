@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import { FaBars } from "react-icons/fa";
-import axios from "axios";
+import api from "../../api";
 import toast from "react-hot-toast";
 import { PieChart, Pie, Cell, Legend, Tooltip, ResponsiveContainer } from "recharts";
 
-export default function Dashboard() {
+export default function Dasboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [profile, setProfile] = useState(null);
   const [transactions, setTransactions] = useState([]);
@@ -22,7 +22,7 @@ export default function Dashboard() {
       }
 
       try {
-        const res = await axios.get(`http://localhost:5000/api/profile/${email}`);
+        const res = await api.get(`/api/profile/${email}`);
         const data = res.data.user;
 
         data.income = Number(data.income);

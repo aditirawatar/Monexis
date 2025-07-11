@@ -12,7 +12,7 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
-import axios from "axios";
+import api from "../../api";
 import toast from "react-hot-toast";
 
 export default function FinancialAnalytics() {
@@ -40,7 +40,7 @@ export default function FinancialAnalytics() {
       }
 
       try {
-        const res = await axios.get(`http://localhost:5000/api/profile/${email}`);
+       const res = await api.get(`/api/profile/${email}`);
         const data = res.data.user;
 
         data.income = Number(data.income);

@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../../api";
 import toast from "react-hot-toast";
 import { auth } from "../Auth/firebase";
 
@@ -27,7 +27,7 @@ export default function ProfileSetup() {
     };
 
     try {
-     await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/profile`, data);
+    await api.post(`/api/profile`, data);
       toast.success("Profile saved successfully!");
       navigate("/dashboard");
     } catch (error) {
